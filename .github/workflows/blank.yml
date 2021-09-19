@@ -1,0 +1,22 @@
+#include <Constants.au3>
+
+Global $unixUser = "user"
+Global $unixPassword = "password"
+Global $unixHost = "unixhost"
+Global $unixHostKey = "0x23,0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+
+_writePuttyKnownHostKeyToRegistry($unixHost, $unixHostKey)
+
+$sshCommand = "ls -la /tmp"
+
+
+$answer = _runSshCommand($unixUser, $unixHost, $sshCommand, $unixPassword)
+If $answer <> "" Then
+MsgBox(0, "output", $answer)
+EndIf
+
+Exit
+
+Func _writePuttyKnownHostKeyToRegistry($host, $hostKey)
+RegWrite("HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\SshHostKeys", "rsa2@22:" & $host, "REG_SZ", $hostKey)
+EndFunc ;==>_writePuttyKnownHostKeyToRegistry
